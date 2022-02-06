@@ -1,10 +1,14 @@
 import React from "react";
 
 const About = () => {
-    console.log('welcome about');
+  console.log("welcome about");
   return (
     <div>
-      <h1>welcome to about page</h1>
+      <br />
+      <br />
+      <br />
+      <br />
+      <h3>welcome to about page</h3>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -21,24 +21,24 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+              {props.loginUser && <li className="nav-item">
                 <Link className="nav-link" aria-current="page" to="/home">
                   Home
                 </Link>
-              </li>
-              <li className="nav-item">
+              </li>}
+              {props.loginUser && <li className="nav-item">
                 <Link className="nav-link" to="/about">
                   About
                 </Link>
-              </li>
+              </li>}
             </ul>
             <form className="d-flex">
-              <Link className="btn btn-primary mx-1" to="/login" role="button">
+              {props.loginUser ?<button onClick={props.Logout}>Logout</button>:<Link className="btn btn-primary mx-1" to="/login" role="button">
                 Login
-              </Link>
-              <Link className="btn btn-primary mx-1" to="/signup" role="button">
+              </Link>}
+              {!props.loginUser &&<Link className="btn btn-primary mx-1" to="/signup" role="button">
                 Signup
-              </Link>
+              </Link>}
             </form>
           </div>
         </div>
