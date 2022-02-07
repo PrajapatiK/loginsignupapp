@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 const LoginForm = ({ Login, error }) => {
   const [details, setDetails] = useState({
@@ -6,6 +9,8 @@ const LoginForm = ({ Login, error }) => {
     email: "",
     password: "",
   });
+  const [formErrors, setFormErrors] = useState({});
+  const errors = {};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,9 +19,30 @@ const LoginForm = ({ Login, error }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormErrors(validate(details));
     Login(details);
   };
-  
+
+  const validate = (values) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    if (!values.username) {
+      errors.username = "Username is required!";
+    }
+    if (!values.email) {
+      errors.email = "Email is required!";
+    } else if (!regex.test(values.email)) {
+      errors.email = "This is not a valid email format!";
+    }
+    if (!values.password) {
+      errors.password = "Password is required";
+    } else if (values.password.length < 4) {
+      errors.password = "Password must be more than 4 characters";
+    } else if (values.password.length > 10) {
+      errors.password = "Password cannot exceed more than 10 characters";
+    }
+    return errors;
+  };
+
   return (
     <div className="container">
       <br />
@@ -26,20 +52,6 @@ const LoginForm = ({ Login, error }) => {
       <h3>welcome to LoginForm page</h3>
 
       <form onSubmit={handleSubmit}>
-        <div className="mb-3 ">
-          <label htmlFor="name" className="form-label" required>
-            User Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            name="username"
-            value={details.username}
-            onChange={handleChange}
-            aria-describedby="emailHelp"
-          />
-        </div>
         <div className="mb-3 ">
           <label htmlFor="email" className="form-label">
             Email address
@@ -54,6 +66,7 @@ const LoginForm = ({ Login, error }) => {
             aria-describedby="emailHelp"
           />
         </div>
+        <p style={{ color: "red", marginTop: "-16px" }}>{formErrors.email}</p>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
             Password
@@ -67,7 +80,9 @@ const LoginForm = ({ Login, error }) => {
             onChange={handleChange}
           />
         </div>
-
+        <p style={{ color: "red", marginTop: "-16px" }}>
+          {formErrors.password}
+        </p><br/>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

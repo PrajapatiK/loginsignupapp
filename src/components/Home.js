@@ -1,29 +1,37 @@
 import React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 const Home = () => {
   let userInfo = [];
   userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  let loggedinrole = localStorage.getItem("loggedinrole");
+  let loginDetail = JSON.parse(localStorage.getItem("loggedinrole"));
+  console.log(loginDetail);
   userInfo = userInfo.filter((user) => user.role !== "admin");
   const removeUser = (email) => {
     let users = userInfo.filter((user) => user.email !== email);
-    console.log(users);
     localStorage.setItem("userInfo", JSON.stringify(users));
+    toast.success("List item Removed successfully!", { autoClose: 3000 });
   };
-
   return (
     <div>
       <br />
       <br />
       <br />
       <br />
-      <h3>welcome to home page</h3>
+      <h3>{loginDetail.username},welcome to home page</h3>
+      <p>
+        Name: {loginDetail.username}<br/>
+        Email:{loginDetail.email}
+      </p>
+
       {userInfo.length === 0
         ? "No Entry for display"
-        : loggedinrole === "admin" && (
+        : loginDetail.role === "admin" && (
             <>
               <div
-                class="d-flex bd-highlight justify-content-start"
+                className="d-flex bd-highlight justify-content-start"
                 style={{ color: "black" }}
               >
                 <div className="p-2 flex-fill bd-highlight">
@@ -45,7 +53,8 @@ const Home = () => {
 
               {userInfo.map((item, index) => (
                 <div
-                  class="d-flex bd-highlight justify-content-start"
+                  className="d-flex bd-highlight justify-content-start"
+                  key={index}
                   style={{ color: "red" }}
                 >
                   <div className="p-2 flex-fill bd-highlight">

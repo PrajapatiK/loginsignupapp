@@ -1,6 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
+//New user signup form
 const SignUp = () => {
   const initialValue = {
     username: "",
@@ -12,23 +16,27 @@ const SignUp = () => {
   const [formValues, setFormValues] = useState(initialValue);
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const errors = {};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
-   // console.log(formValues.password ,formValues.cpassword );
-    //(formValues.password === formValues.cpassword?'password entry matches':'entry does not matches';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     if (
       (formValues.username ||
         formValues.email ||
         formValues.password ||
-        formValues.cpassword) !== (null || undefined || "")) {     
-    
+        formValues.cpassword) !== (null || undefined || "")
+    ) {
+      if (formValues.password !== formValues.cpassword) {
+        errors.password = "password not matches";
+        return;
+      }
+
       let dataItems = [];
       let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
       let userIndex = (dataDummyItems || []).findIndex(
@@ -41,23 +49,18 @@ const SignUp = () => {
       dataDummyItems
         ? dataDummyItems.push(formValues)
         : dataItems.push(formValues);
-      //for the first entry
+      //for the very first entry
       let userInfo = dataItems.length > 0 ? dataItems : dataDummyItems;
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      toast.success("Infomation successfully entered");
       setIsSubmit(true);
       setFormValues(initialValue);
     } else {
-      alert("Empty entry not allowed");
+      toast.error("Empty entry not allowed");
     }
   };
-  // useEffect(() => {
-  //   if (Object.keys(formErrors).length === 0 && isSubmit) {
-  //     console.log(formValues);
-  //   }
-  // }, [formErrors, isSubmit]);
-
+  //validation/regex for the user fields
   const validate = (values) => {
-    const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if (!values.username) {
       errors.username = "Username is required!";
@@ -76,6 +79,7 @@ const SignUp = () => {
     }
     return errors;
   };
+
   return (
     <div className="container">
       <br />
@@ -98,7 +102,9 @@ const SignUp = () => {
             aria-describedby="emailHelp"
           />
         </div>
-        <p style={{ color: "red" }}>{formErrors.username}</p>
+        <p style={{ color: "red", marginTop: "-16px" }}>
+          {formErrors.username}
+        </p>
         <div className="mb-3 ">
           <label htmlFor="email" className="form-label" required>
             Email address
@@ -112,11 +118,8 @@ const SignUp = () => {
             onChange={handleChange}
             aria-describedby="emailHelp"
           />
-          {/* <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div> */}
         </div>
-        <p style={{ color: "red" }}>{formErrors.email}</p>
+        <p style={{ color: "red", marginTop: "-16px" }}>{formErrors.email}</p>
         <div className="mb-3">
           <label htmlFor="password" className="form-label" required>
             Password
@@ -130,7 +133,9 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </div>
-        <p style={{ color: "red" }}>{formErrors.password}</p>
+        <p style={{ color: "red", marginTop: "-16px" }}>
+          {formErrors.password}
+        </p>
         <div className="mb-3">
           <label htmlFor="cpassword" className="form-label" required>
             Confirm Password
@@ -144,7 +149,9 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </div>
-        <p style={{ color: "red" }}>{formErrors.password}</p>
+        <p style={{ color: "red", marginTop: "-16px" }}>
+          {formErrors.password}
+        </p>
         <div className="mb-3">
           <label htmlFor="role" className="form-label" required>
             Role

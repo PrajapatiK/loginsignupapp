@@ -1,13 +1,18 @@
 import "./App.css";
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import SignUp from "./components/SignUp";
 import Home from "./components/Home";
 import About from "./components/About";
 import Dashboard from "./components/Dashboard";
 import Root from "./components/Root";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PageNotFound from "./components/PageNotFound";
+
+toast.configure();
 
 function App() {
   const [error, setError] = useState("");
@@ -15,38 +20,52 @@ function App() {
     JSON.parse(localStorage.getItem("loginUser"))
   );
   let navigate = useNavigate();
-  const Login = (details) => {
+  const Login = async (details) => {
     let userIndex;
     let storageInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log("storageInfo", storageInfo);
-    if (storageInfo.length > 0) {
+    if (storageInfo && storageInfo.length > 0) {
       userIndex = storageInfo.findIndex((user) => user.email === details.email);
-      console.log(userIndex);
-      if (userIndex !== -1 && storageInfo[userIndex].email === details.email) {
+      let isCompare = false;
+      isCompare = details.password === storageInfo[userIndex].password;
+      if (
+        userIndex !== -1 &&
+        storageInfo[userIndex].email === details.email &&
+        isCompare
+      ) {
         IsloginUser(true);
         localStorage.setItem("loginUser", "true");
-        localStorage.setItem("loggedinrole", storageInfo[userIndex].role);
+        localStorage.setItem(
+          "loggedinrole",
+          JSON.stringify(storageInfo[userIndex])
+        );
+        toast.success("login successfully!!!");
         //for redirect
         navigate("home");
+      } else {
+        toast.error("Email or password is incorrect!");
       }
     } else {
-      console.log("not matched");
-      alert("Unauthrized user Plz signup first.");
+      toast.error("Unauthorized user not allowed!");
     }
   };
 
   const Logout = (e) => {
-    console.log(e);
     e.preventDefault();
     localStorage.setItem("loginUser", "false");
     IsloginUser(false);
-    console.log("logout");
+    toast.success("logout successfully!!!");
   };
-
+  // console.log(useLocation());
+  // let urlArray = ["/", "dashboard", "home", "about"];
+  // const location = useLocation();
   return (
     <div>
-      <Navbar loginUser={loginUser} Logout={Logout} />
+      {/* {urlArray.includes(location.pathname) && ( */}
+        <Navbar loginUser={loginUser} Logout={Logout} />
+      )
       <Routes>
+        <Route path="*" exact={true} element={<PageNotFound />} />
+        {/* <Navigate from="*" to="/404" /> */}
         <Route exact path="/" element={<Root />} />
         {loginUser && <Route exact path="dashboard" element={<Dashboard />} />}
         {loginUser && <Route exact path="home" element={<Home />} />}
