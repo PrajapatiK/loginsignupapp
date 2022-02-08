@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
@@ -7,7 +8,7 @@ const Home = () => {
   let userInfo = [];
   userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let loginDetail = JSON.parse(localStorage.getItem("loggedinrole"));
-  console.log(loginDetail);
+  //console.log(loginDetail);
   userInfo = userInfo.filter((user) => user.role !== "admin");
   const removeUser = (email) => {
     let users = userInfo.filter((user) => user.email !== email);
@@ -18,14 +19,30 @@ const Home = () => {
     <div>
       <br />
       <br />
-      <br />
-      <br />
       <h3>{loginDetail.username},welcome to home page</h3>
-      <p>
-        Name: {loginDetail.username}<br/>
+      <p
+        style={{
+          color: "green",
+          display: "flex",
+          justifyContent: "left",
+          alignItems: "center",
+        }}
+      >
+        Name: {loginDetail.username}
+        <br />
         Email:{loginDetail.email}
+        <br />
+        Role:{loginDetail.role}
       </p>
-
+      <div>
+        {loginDetail.role === "admin"}
+        {
+          <Link className="btn btn-outline-primary" to="/users/add">
+            Add user
+          </Link>
+        }
+      </div>
+      {/* //else{} */}
       {userInfo.length === 0
         ? "No Entry for display"
         : loginDetail.role === "admin" && (
@@ -51,11 +68,11 @@ const Home = () => {
                 </div>
               </div>
 
-              {userInfo.map((item, index) => (
+              {userInfo.reverse().map((item, index) => (
                 <div
                   className="d-flex bd-highlight justify-content-start"
                   key={index}
-                  style={{ color: "red" }}
+                  style={{ color: "#DEA79B" }}
                 >
                   <div className="p-2 flex-fill bd-highlight">
                     {item.username}
@@ -66,13 +83,17 @@ const Home = () => {
                   </div>
                   <div className="p-2 flex-fill bd-highlight">{index + 1}</div>
                   <div className="p-2 flex-fill bd-highlight">
-                    <a
-                      href="# "
+                    <Link
+                      className="btn btn-danger"
+                      to="# "
                       style={{ textDecoration: "none" }}
                       onClick={() => removeUser(item.email)}
                     >
                       Remove
-                    </a>
+                    </Link>
+                    <Link className="btn btn-primary mx-1" to="/users/edit">
+                      Edit
+                    </Link>
                   </div>
                 </div>
               ))}

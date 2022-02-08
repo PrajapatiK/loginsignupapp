@@ -11,9 +11,10 @@ import Root from "./components/Root";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PageNotFound from "./components/PageNotFound";
+import AddUser from "./components/AddUser";
+import EditUser from "./components/EditUser";
 
 toast.configure();
-
 function App() {
   const [error, setError] = useState("");
   const [loginUser, IsloginUser] = useState(
@@ -23,14 +24,18 @@ function App() {
   const Login = async (details) => {
     let userIndex;
     let storageInfo = JSON.parse(localStorage.getItem("userInfo"));
+    // storageInfo.map((item) => {
+    //   if (item.email === details.email) {
     if (storageInfo && storageInfo.length > 0) {
       userIndex = storageInfo.findIndex((user) => user.email === details.email);
       let isCompare = false;
       isCompare = details.password === storageInfo[userIndex].password;
       if (
-        userIndex !== -1 &&
-        storageInfo[userIndex].email === details.email &&
-        isCompare
+        (userIndex !== -1 &&
+          storageInfo[userIndex].email === details.email &&
+          isCompare) ||
+        details.email !== undefined ||
+        details.password !== undefined
       ) {
         IsloginUser(true);
         localStorage.setItem("loginUser", "true");
@@ -38,8 +43,8 @@ function App() {
           "loggedinrole",
           JSON.stringify(storageInfo[userIndex])
         );
+        //console.log("yha kse///");
         toast.success("login successfully!!!");
-        //for redirect
         navigate("home");
       } else {
         toast.error("Email or password is incorrect!");
@@ -47,25 +52,24 @@ function App() {
     } else {
       toast.error("Unauthorized user not allowed!");
     }
+    //   } else {
+    //     toast.error("Details not available at storage");
+    //   }
+    // });
   };
 
   const Logout = (e) => {
     e.preventDefault();
     localStorage.setItem("loginUser", "false");
     IsloginUser(false);
+    navigate("");
     toast.success("logout successfully!!!");
   };
-  // console.log(useLocation());
-  // let urlArray = ["/", "dashboard", "home", "about"];
-  // const location = useLocation();
   return (
     <div>
-      {/* {urlArray.includes(location.pathname) && ( */}
-        <Navbar loginUser={loginUser} Logout={Logout} />
-      )
+      <Navbar loginUser={loginUser} Logout={Logout} />
       <Routes>
         <Route path="*" exact={true} element={<PageNotFound />} />
-        {/* <Navigate from="*" to="/404" /> */}
         <Route exact path="/" element={<Root />} />
         {loginUser && <Route exact path="dashboard" element={<Dashboard />} />}
         {loginUser && <Route exact path="home" element={<Home />} />}
@@ -76,6 +80,8 @@ function App() {
           element={<LoginForm Login={Login} error={error} />}
         />
         <Route exact path="signup" element={<SignUp />} />
+        <Route exact path="users/add" element={<AddUser />} />
+        <Route exact path="users/edit" element={<EditUser />} />
       </Routes>
     </div>
   );

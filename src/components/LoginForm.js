@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
@@ -11,7 +12,7 @@ const LoginForm = ({ Login, error }) => {
   });
   const [formErrors, setFormErrors] = useState({});
   const errors = {};
-
+  let navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDetails({ ...details, [name]: value });
@@ -20,10 +21,14 @@ const LoginForm = ({ Login, error }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(details));
+    console.log(details);
+    (details.email||details.password)===("")?navigate(''):
     Login(details);
+    //console.log(details);
   };
 
   const validate = (values) => {
+    //console.log(typeof validate);
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     if (!values.username) {
       errors.username = "Username is required!";

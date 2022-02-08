@@ -1,7 +1,7 @@
 import React from "react";
 
 const About = () => {
-  console.log("welcome about");
+  //console.log("welcome about");
   return (
     <div>
       <br />
