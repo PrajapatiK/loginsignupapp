@@ -79,8 +79,8 @@ const AddUser = () => {
     return errors;
   };
   return (
-    <div>
-      <h1>welcome to add users</h1>
+    <div className="container">
+      <h3 className="my-3">welcome to add users</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3 ">
           <label htmlFor="name" className="form-label" required>

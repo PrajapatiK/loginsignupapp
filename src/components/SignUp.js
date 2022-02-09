@@ -84,8 +84,6 @@ const SignUp = () => {
     <div className="container">
       <br />
       <br />
-      <br />
-      <br />
       <h3>welcome to Signup page</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3 ">

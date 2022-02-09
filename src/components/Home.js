@@ -8,7 +8,6 @@ const Home = () => {
   let userInfo = [];
   userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let loginDetail = JSON.parse(localStorage.getItem("loggedinrole"));
-  //console.log(loginDetail);
   userInfo = userInfo.filter((user) => user.role !== "admin");
   const removeUser = (email) => {
     let users = userInfo.filter((user) => user.email !== email);
@@ -34,15 +33,13 @@ const Home = () => {
         <br />
         Role:{loginDetail.role}
       </p>
-      <div>
-        {loginDetail.role === "admin"}
-        {
+      {loginDetail.role === "admin" && (
+        <div>
           <Link className="btn btn-outline-primary" to="/users/add">
             Add user
           </Link>
-        }
-      </div>
-      {/* //else{} */}
+        </div>
+      )}
       {userInfo.length === 0
         ? "No Entry for display"
         : loginDetail.role === "admin" && (

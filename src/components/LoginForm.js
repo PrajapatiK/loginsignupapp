@@ -24,7 +24,7 @@ const LoginForm = ({ Login, error }) => {
     console.log(details);
     (details.email||details.password)===("")?navigate(''):
     Login(details);
-    //console.log(details);
+    console.log(details);
   };
 
   const validate = (values) => {

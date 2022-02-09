@@ -22,6 +22,7 @@ function App() {
   );
   let navigate = useNavigate();
   const Login = async (details) => {
+    console.log(details);
     let userIndex;
     let storageInfo = JSON.parse(localStorage.getItem("userInfo"));
     // storageInfo.map((item) => {
@@ -81,7 +82,7 @@ function App() {
         />
         <Route exact path="signup" element={<SignUp />} />
         <Route exact path="users/add" element={<AddUser />} />
-        <Route exact path="users/edit" element={<EditUser />} />
+        <Route exact path="users/edit/:id" element={<EditUser />} />
       </Routes>
     </div>
   );
