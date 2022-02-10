@@ -21,10 +21,9 @@ const LoginForm = ({ Login, error }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(details));
-    console.log(details);
-    (details.email||details.password)===("")?navigate(''):
-    Login(details);
-    console.log(details);
+   // console.log(details);
+    (details.email || details.password) === "" ? navigate("") : Login(details);
+    //console.log(details);
   };
 
   const validate = (values) => {
@@ -87,7 +86,8 @@ const LoginForm = ({ Login, error }) => {
         </div>
         <p style={{ color: "red", marginTop: "-16px" }}>
           {formErrors.password}
-        </p><br/>
+        </p>
+        <br />
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

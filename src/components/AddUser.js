@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
@@ -16,7 +17,7 @@ const AddUser = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const errors = {};
-
+  let navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -54,6 +55,7 @@ const AddUser = () => {
       toast.success("Infomation successfully entered");
       setIsSubmit(true);
       setFormValues(initialValue);
+      navigate("");
     } else {
       toast.error("Empty entry not allowed");
     }

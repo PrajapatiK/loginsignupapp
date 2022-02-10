@@ -2,14 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 toast.configure();
 
-//New user signup form
 const EditUser = () => {
-  console.log("welcome to Edituser");
   const { id } = useParams();
-  console.log(id);
+  let navigate = useNavigate();
+  let users = JSON.parse(localStorage.getItem("userInfo"));
+  var userIndex = users.findIndex((user) => user.email === id);
   const initialValue = {
     username: "",
     email: "",
@@ -17,8 +17,7 @@ const EditUser = () => {
     cpassword: "",
     role: "user",
   };
-  const [formValues, setFormValues] = useState(initialValue);
-  const [isSubmit, setIsSubmit] = useState(false);
+  const [formValues, setFormValues] = useState(users[userIndex]);
   const [formErrors, setFormErrors] = useState({});
   const errors = {};
 
@@ -29,48 +28,58 @@ const EditUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    if (
-      (formValues.username ||
-        formValues.email ||
-        formValues.password ||
-        formValues.cpassword) !== (null || undefined || "")
-    ) {
-      if (formValues.password !== formValues.cpassword) {
-        errors.password = "password not matches";
-        return;
-      }
-
-      let dataItems = [];
-      let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
-      var userIndex = (dataDummyItems || []).findIndex(
-        (user) => user.email === formValues.email
-      );
-      console.log(userIndex);
-      if (userIndex >= 0) {
-        alert("Email already registered Plz signup with new one");
-        return;
-      }
-      dataDummyItems
-        ? dataDummyItems.push(formValues)
-        : dataItems.push(formValues);
-      //for the very first entry
-      let userInfo = dataItems.length > 0 ? dataItems : dataDummyItems;
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      toast.success("Infomation successfully entered");
-      setIsSubmit(true);
-      setFormValues(initialValue);
-    } else {
-      toast.error("Empty entry not allowed");
-    }
+    users.splice(userIndex, 1, formValues);
+    localStorage.setItem("userInfo", JSON.stringify(users));
+    navigate(-1);
+    toast.success("Infomation successfully updated");
   };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setFormErrors(validate(formValues));
+  //   if (
+  //     (formValues.username ||
+  //       formValues.email ||
+  //       formValues.password ||
+  //       formValues.cpassword) !== (null || undefined || "")
+  //   ) {
+  //     if (formValues.password !== formValues.cpassword) {
+  //       errors.password = "password not matches";
+  //       return;
+  //     }
 
-  const loadUser = () => {
-    //const result = userIndex.id;
-  };
-  useEffect(() => {
-    loadUser();
-  }, []);
+  //     let dataItems = [];
+  //     let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
+  //     var userIndex = (dataDummyItems || []).findIndex(
+  //       (user) => user.email === formValues.email
+  //     );
+  //     console.log(userIndex);
+  //     if (userIndex >= 0) {
+  //       alert("Email already registered Plz signup with new one");
+  //       return;
+  //     }
+  //     dataDummyItems
+  //       ? dataDummyItems.push(formValues)
+  //       : dataItems.push(formValues);
+  //     //for the very first entry
+  //     let userInfo = dataItems.length > 0 ? dataItems : dataDummyItems;
+  //     localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  //     toast.success("Infomation successfully entered");
+  //     setIsSubmit(true);
+  //     setFormValues(initialValue);
+  //   } else {
+  //     toast.error("Empty entry not allowed");
+  //   }
+  // };
+
+  // const loadUser = () => {
+  //  let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
+  //   let result = ('dataDummyItems.${id}');
+  //   console.log(result);
+  //   setFormValues(result.data);
+  // };
+  // useEffect(() => {
+  //   loadUser();
+  // }, []);
 
   //validation/regex for the user fields
   const validate = (values) => {
@@ -177,7 +186,7 @@ const EditUser = () => {
           <label className="custom-file-label">{/* Choose file */}</label>
         </div>
         <button type="submit" className="btn btn-primary my-2">
-          Submit
+          Update
         </button>
       </form>
     </div>

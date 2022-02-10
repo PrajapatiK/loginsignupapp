@@ -14,6 +14,7 @@ const Home = () => {
     localStorage.setItem("userInfo", JSON.stringify(users));
     toast.success("List item Removed successfully!", { autoClose: 3000 });
   };
+
   return (
     <div>
       <br />
@@ -88,7 +89,7 @@ const Home = () => {
                     >
                       Remove
                     </Link>
-                    <Link className="btn btn-primary mx-1" to="/users/edit">
+                    <Link className="btn btn-primary mx-1" to={`/users/edit/${item.email}`}>
                       Edit
                     </Link>
                   </div>

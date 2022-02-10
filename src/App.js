@@ -25,38 +25,32 @@ function App() {
     console.log(details);
     let userIndex;
     let storageInfo = JSON.parse(localStorage.getItem("userInfo"));
-    // storageInfo.map((item) => {
-    //   if (item.email === details.email) {
     if (storageInfo && storageInfo.length > 0) {
       userIndex = storageInfo.findIndex((user) => user.email === details.email);
-      let isCompare = false;
-      isCompare = details.password === storageInfo[userIndex].password;
       if (
-        (userIndex !== -1 &&
-          storageInfo[userIndex].email === details.email &&
-          isCompare) ||
-        details.email !== undefined ||
+        userIndex !== -1 &&
+        storageInfo[userIndex].email === details.email &&
+        details.password === storageInfo[userIndex].password &&
+        details.email !== undefined &&
         details.password !== undefined
       ) {
+        console.log("line number 42");
         IsloginUser(true);
         localStorage.setItem("loginUser", "true");
         localStorage.setItem(
           "loggedinrole",
           JSON.stringify(storageInfo[userIndex])
         );
-        //console.log("yha kse///");
         toast.success("login successfully!!!");
         navigate("home");
       } else {
+        console.log("line 53");
         toast.error("Email or password is incorrect!");
       }
     } else {
+      console.log("line 57");
       toast.error("Unauthorized user not allowed!");
     }
-    //   } else {
-    //     toast.error("Details not available at storage");
-    //   }
-    // });
   };
 
   const Logout = (e) => {
