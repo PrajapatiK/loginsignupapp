@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
-import SignUp from "./components/SignUp";
-import Home from "./components/Home";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
 import About from "./components/About";
 import Dashboard from "./components/Dashboard";
 import Root from "./components/Root";
@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PageNotFound from "./components/PageNotFound";
 import AddUser from "./components/AddUser";
-import EditUser from "./components/EditUser";
+import EditUser from "./pages/EditUser";
 
 toast.configure();
 function App() {

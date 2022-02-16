@@ -1,30 +1,21 @@
 import React from 'react'
+import InputComponent from './forms/InputComponent'
+import ButtonComponent from './forms/ButtonComponent'
+import DropdownComponent from './forms/DropdownComponent'
+import { roleConstant as roles } from '../lib/constant'
 
-const EditUser = (props) => {
+const Signup = (props) => {
+
   const { handleSubmit, formValues, handleChange, formErrors } = props
+
   return (
     <div className="container">
       <br />
       <br />
-      <h3>Edit the User details</h3>
-      <form onSubmit={handleSubmit} autoComplete="off">
-        <div className="mb-3 ">
-          <label htmlFor="name" className="form-label" required>
-            User Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            name="username"
-            value={formValues.username}
-            onChange={handleChange}
-            aria-describedby="emailHelp"
-          />
-        </div>
-        <p style={{ color: "red", marginTop: "-16px" }}>
-          {formErrors.username}
-        </p>
+      <h3>welcome to Signup page</h3>
+      <form autoComplete="off" onSubmit={handleSubmit}>
+        <InputComponent name="username" value={formValues.username} labelName="User Name" type="text" id="username" onChange={handleChange} error={formErrors.username} />
+
         <div className="mb-3 ">
           <label htmlFor="email" className="form-label" required>
             Email address
@@ -72,25 +63,17 @@ const EditUser = (props) => {
         <p style={{ color: "red", marginTop: "-16px" }}>
           {formErrors.password}
         </p>
-        <div className="mb-3">
-          <label htmlFor="role" className="form-label" required>
-            Role
-            <select name="role" value={formValues.role} onChange={handleChange}>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
-          </label>
-        </div>
+        <DropdownComponent name="role" labelName="Role" value={formValues.role} onChange={handleChange} options={roles} />
+
         <div className="custom-file">
           <input type="file" className="custom-file-input" id="customFile" />
           <label className="custom-file-label">{/* Choose file */}</label>
         </div>
-        <button type="submit" className="btn btn-primary my-2">
-          Update
-        </button>
+        <ButtonComponent type="submit" className="btn btn-primary my-2" buttonText="Submit" />
+
       </form>
     </div>
   )
 }
 
-export default EditUser
+export default Signup
