@@ -83,7 +83,7 @@ const AddUser = () => {
   return (
     <div className="container">
       <h3 className="my-3">welcome to add users</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autocomplete="off">
         <div className="mb-3 ">
           <label htmlFor="name" className="form-label" required>
             User Name

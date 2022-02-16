@@ -33,53 +33,6 @@ const EditUser = () => {
     navigate(-1);
     toast.success("Infomation successfully updated");
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setFormErrors(validate(formValues));
-  //   if (
-  //     (formValues.username ||
-  //       formValues.email ||
-  //       formValues.password ||
-  //       formValues.cpassword) !== (null || undefined || "")
-  //   ) {
-  //     if (formValues.password !== formValues.cpassword) {
-  //       errors.password = "password not matches";
-  //       return;
-  //     }
-
-  //     let dataItems = [];
-  //     let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
-  //     var userIndex = (dataDummyItems || []).findIndex(
-  //       (user) => user.email === formValues.email
-  //     );
-  //     console.log(userIndex);
-  //     if (userIndex >= 0) {
-  //       alert("Email already registered Plz signup with new one");
-  //       return;
-  //     }
-  //     dataDummyItems
-  //       ? dataDummyItems.push(formValues)
-  //       : dataItems.push(formValues);
-  //     //for the very first entry
-  //     let userInfo = dataItems.length > 0 ? dataItems : dataDummyItems;
-  //     localStorage.setItem("userInfo", JSON.stringify(userInfo));
-  //     toast.success("Infomation successfully entered");
-  //     setIsSubmit(true);
-  //     setFormValues(initialValue);
-  //   } else {
-  //     toast.error("Empty entry not allowed");
-  //   }
-  // };
-
-  // const loadUser = () => {
-  //  let dataDummyItems = JSON.parse(localStorage.getItem("userInfo"));
-  //   let result = ('dataDummyItems.${id}');
-  //   console.log(result);
-  //   setFormValues(result.data);
-  // };
-  // useEffect(() => {
-  //   loadUser();
-  // }, []);
 
   //validation/regex for the user fields
   const validate = (values) => {
@@ -107,7 +60,7 @@ const EditUser = () => {
       <br />
       <br />
       <h3>Edit the User details</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autocomplete="off">
         <div className="mb-3 ">
           <label htmlFor="name" className="form-label" required>
             User Name

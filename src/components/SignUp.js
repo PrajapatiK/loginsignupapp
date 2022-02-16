@@ -13,6 +13,7 @@ const SignUp = () => {
     cpassword: "",
     role: "user",
   };
+  const [state, setState] = useState({});
   const [formValues, setFormValues] = useState(initialValue);
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState({});
@@ -85,7 +86,7 @@ const SignUp = () => {
       <br />
       <br />
       <h3>welcome to Signup page</h3>
-      <form onSubmit={handleSubmit}>
+      <form autocomplete="off" onSubmit={handleSubmit}>
         <div className="mb-3 ">
           <label htmlFor="name" className="form-label" required>
             User Name

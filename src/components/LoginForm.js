@@ -55,7 +55,7 @@ const LoginForm = ({ Login, error }) => {
       <br />
       <h3>welcome to LoginForm page</h3>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autocomplete="off">
         <div className="mb-3 ">
           <label htmlFor="email" className="form-label">
             Email address
